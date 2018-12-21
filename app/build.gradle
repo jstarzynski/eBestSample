@@ -26,17 +26,10 @@ ext.jacksonVersion = '2.5.1'
 
 dependencies {
 
-    implementation project(':nexosdk-Dev-SolarBrazilDev-debug')
+    implementation project(':nexosdk-Dev-ElstatDev-debug')
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
 
-    // Commmons
-    implementation 'com.android.support:support-annotations:28.0.0'
-    implementation 'com.android.support:support-core-ui:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:support-fragment:28.0.0'
-    implementation 'com.android.support:support-media-compat:28.0.0'
-    implementation 'com.android.support:support-core-utils:28.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     // Jackson
@@ -50,6 +43,7 @@ dependencies {
 
     // Location service
     implementation 'com.google.android.gms:play-services-location:10.2.6'
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0'
 }

@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/nexosdk-Dev-ElstatDev-debug" />
             <option value="$PROJECT_DIR$/nexosdk-Dev-SolarBrazilDev-debug" />
           </set>
         </option>

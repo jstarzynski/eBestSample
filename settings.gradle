@@ -1,1 +1,1 @@
-include ':app', ':nexosdk-Dev-SolarBrazilDev-debug'
+include ':app', ':nexosdk-Dev-SolarBrazilDev-debug', ':nexosdk-Dev-ElstatDev-debug'
