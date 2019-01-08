@@ -9,8 +9,12 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.elstatgroup.elstat.sdk.api.*
-import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.*
+import com.elstatgroup.elstat.sdk.api.NexoError
+import com.elstatgroup.elstat.sdk.api.NexoSync
+import com.elstatgroup.elstat.sdk.api.NexoSyncListener
+import com.elstatgroup.elstat.sdk.api.NexoVerificationResult
+import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.AUTHORIZED
+import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.ERROR_DURING_VERIFICATION
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.Executors
 
@@ -39,15 +43,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onScanFailed(errorCode: Int) {
-                super.onScanFailed(errorCode)
-            }
         })
     }
 
     private fun handleVerificationResult(device: BluetoothDevice, result: NexoVerificationResult) {
         when(result.status) {
-            NOT_AUTHORIZED -> Log.v("eBestSample", "unauthorized: ${device.name ?: device.address}")
+//            NOT_AUTHORIZED -> Log.v("eBestSample", "unauthorized: ${device.name ?: device.address}")
             AUTHORIZED -> result.nexoId?.let { nexoId ->
                 Log.v("eBestSample", "authorized: $nexoId")
                 NexoSync.getInstance().syncCooler(applicationContext, nexoId, 3, syncListener)
@@ -60,12 +61,12 @@ class MainActivity : AppCompatActivity() {
 
     private val syncListener = object: NexoSyncListener {
 
-        override fun onSuccess(result: String?) {
-            Log.v("eBestSample", "success: $result")
+        override fun onSuccess(nexoId: String?, result: String?) {
+            Log.v("eBestSample", "$nexoId -> success: $result")
         }
 
-        override fun onError(error: NexoError) {
-            Log.v("eBestSample", "error: ${error.errorType.name}")
+        override fun onError(nexoId: String?, error: NexoError) {
+            Log.v("eBestSample", "$nexoId -> error: ${error.errorType.name}")
         }
 
         override fun onCoolerProgress(nexoId: String?, progress: Float) {
