@@ -13,8 +13,7 @@ import com.elstatgroup.elstat.sdk.api.NexoError
 import com.elstatgroup.elstat.sdk.api.NexoSync
 import com.elstatgroup.elstat.sdk.api.NexoSyncListener
 import com.elstatgroup.elstat.sdk.api.NexoVerificationResult
-import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.AUTHORIZED
-import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.ERROR_DURING_VERIFICATION
+import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.Executors
 
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleVerificationResult(device: BluetoothDevice, result: NexoVerificationResult) {
         when(result.status) {
-//            NOT_AUTHORIZED -> Log.v("eBestSample", "unauthorized: ${device.name ?: device.address}")
+            NOT_AUTHORIZED -> Log.v("eBestSample", "unauthorized: ${device.name ?: device.address}")
             AUTHORIZED -> result.nexoId?.let { nexoId ->
                 Log.v("eBestSample", "authorized: $nexoId")
                 NexoSync.getInstance().syncCooler(applicationContext, nexoId, 3, syncListener)
