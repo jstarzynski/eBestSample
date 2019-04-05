@@ -9,10 +9,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.elstatgroup.elstat.sdk.api.NexoError
-import com.elstatgroup.elstat.sdk.api.NexoSync
-import com.elstatgroup.elstat.sdk.api.NexoSyncListener
-import com.elstatgroup.elstat.sdk.api.NexoVerificationResult
+import com.elstatgroup.elstat.sdk.api.*
 import com.elstatgroup.elstat.sdk.api.NexoVerificationResult.NexoVerificationStatus.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.Executors
@@ -31,6 +28,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        authAsynchronously()
+    }
+
+    private fun authAsynchronously() {
+        NexoSync.getInstance().authorize(applicationContext, object: NexoAuthorizationListener {
+            override fun onAuthorizationSuccessful() {
+                Log.v("eBestSample", "SDK authorized successfully")
+                startScanning()
+            }
+
+            override fun onError(nexoId: String?, error: NexoError) {
+                Log.v("eBestSample", "error: ${error.errorType.name}")
+            }
+        })
+    }
+
+    private fun authSynchronously() {
+        executor.execute {
+            val result = NexoSync.getInstance().authorize(applicationContext)
+            if (result.isSuccess)
+                Log.v("eBestSample", "SDK authorized successfully")
+            else
+                Log.v("eBestSample", "error: ${result.nexoError?.errorType?.name}")
+        }
+    }
+
+    private fun startScanning() {
         mBluetoothAdapter?.bluetoothLeScanner?.startScan(object : ScanCallback() {
             override fun onScanResult(callbackType: Int, result: ScanResult?) {
                 executor.execute {
